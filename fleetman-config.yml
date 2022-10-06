@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fleetman-config
+data:
+  SPRING_PROFILES_ACTIVE: production-microservice
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fleetman-db-config
+data:
+  database.properties: |
+    database.url=<some url here>
+    database.password=<some password here>
+---

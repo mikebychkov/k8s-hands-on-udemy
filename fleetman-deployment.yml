@@ -15,9 +15,12 @@ spec:
       containers:
       - name: position-sim
         image: richardchesterwood/k8s-fleetman-position-simulator:release2
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: production-microservice
+#        env:
+#        - name: SPRING_PROFILES_ACTIVE
+#          value: production-microservice
+        envFrom:
+        - configMapRef:
+            name: fleetman-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -78,6 +81,13 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: production-microservice
+        volumeMounts:
+        - name: database-config-volume
+          mountPath: /etc/any/db/config
+      volumes:
+      - name: database-config-volume
+        configMap:
+          name: fleetman-db-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -97,9 +107,12 @@ spec:
       containers:
       - name: webapp
         image: richardchesterwood/k8s-fleetman-webapp-angular:release2
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: production-microservice
+          #env:
+          #- name: SPRING_PROFILES_ACTIVE
+          #  value: production-microservice
+        envFrom:
+        - configMapRef:
+            name: fleetman-config
 ---
 apiVersion: apps/v1
 kind: Deployment
